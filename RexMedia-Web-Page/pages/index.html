@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Welcome to REX Media AI</title>
+  <link rel="stylesheet" href="styles.css"> <!-- Link to your CSS if you have any -->
+</head>
+<body>
+  <header>
+    <h1>Welcome to REX Media AI</h1>
+  </header>
+
+  <main>
+    <p>Your free trial is active. Enjoy exploring our influencer marketing tools!</p>
+  </main>
+
+  <!-- Hidden form to trigger n8n workflow -->
+  <form id="freeTrialForm" action="https://your-n8n-webhook-url" method="POST" style="display:none;">
+    <input type="hidden" name="email" id="userEmail" value="" />
+    <input type="hidden" name="startTime" id="startTime" value="" />
+  </form>
+
+  <script>
+    // Function to get query parameters from the URL (like ?email=user@gmail.com)
+    function getParameterByName(name) {
+      name = name.replace(/[\[\]]/g, "\\$&");
+      const url = window.location.href;
+      const regex = new RegExp("[?&]" + name + "(=([^&#]*)|&|#|$)"),
+            results = regex.exec(url);
+      if (!results) return null;
+      if (!results[2]) return '';
+      return decodeURIComponent(results[2].replace(/\+/g, " "));
+    }
+    
+    // Get the email from URL and populate the form
+    const email = getParameterByName('email');
+    if (email) {
+      document.getElementById('userEmail').value = email;
+      document.getElementById('startTime').value = new Date().toISOString();
+      // Optionally, submit the form automatically to record the sign-up in n8n.
+      document.getElementById('freeTrialForm').submit();
+    }
+  </script>
+</body>
+</html>
